@@ -1,6 +1,6 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { AuthService } from '../services/auth.service';
-import { SendMailDTO, UserCreateDTO, UserLoginDTO } from '../entity/user.dto';
+import { UserCreateDTO, UserLoginDTO } from '../entity/user.dto';
 import { User } from '../entity/user.entity';
 import { Public } from '../../constants/auth';
 import { InternalServerException } from '../../exceptions/internalServer.exception';
@@ -24,10 +24,12 @@ export class AuthController {
   @Public()
   @HttpCode(HttpStatus.OK)
   @Post('login')
-  async login(@Body() userLoginDTO: UserLoginDTO) {
+  async login(
+    @Body() userLoginDTO: UserLoginDTO,
+  ): Promise<{ access_token: string }> {
     try {
       const { email, password } = userLoginDTO;
-      await this.authService.login(email, password);
+      return await this.authService.login(email, password);
     } catch (error) {
       console.log('error', error);
       throw new InternalServerException();
@@ -43,7 +45,22 @@ export class AuthController {
   @Post('forgot-password')
   async sendMail(@Body() body: { email: string }) {
     const otp = this.generateRandomCode();
-    console.log('otp', otp);
     await this.authService.sendMail(body.email, otp, 10, body.email);
+  }
+
+  @Public()
+  @HttpCode(HttpStatus.OK)
+  @Post('verify-otp')
+  async verifyOTP(@Body() body: { email: string; otp: string }): Promise<any> {
+    return await this.authService.verifyOTP(body.email, body.otp);
+  }
+
+  @Public()
+  @HttpCode(HttpStatus.OK)
+  @Post('change-password')
+  async changePassword(
+    @Body() body: { email: string; password: string },
+  ): Promise<any> {
+    return await this.authService.changePassword(body.email, body.password);
   }
 }

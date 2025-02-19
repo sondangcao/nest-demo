@@ -58,7 +58,7 @@ export class User {
   @Column({ name: 'otp', nullable: true })
   otp: string;
 
-  @Column({ type: 'datetime', name: 'otp_expiry', nullable: true, default: () => 'CURRENT_TIMESTAMP' })
+  @Column({ type: 'timestamp', name: 'otp_expiry', nullable: true })
   otp_expiry: Date;
 
   @Column({ name: 'avatar', nullable: true })

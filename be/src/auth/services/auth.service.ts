@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { Injectable } from '@nestjs/common';
 import { UserRepository } from '../storage/user.repository';
 import { UserCreateDTO } from '../entity/user.dto';
@@ -41,8 +43,6 @@ export class AuthService {
     expiryMinus: number,
     to: string,
   ): Promise<any> {
-    console.log('to, to', this.configService.get<string>('EMAIL_USER'));
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
     await this.transporter.sendMail({
       from: this.configService.get<string>('EMAIL_USER'),
       to,
@@ -51,5 +51,15 @@ export class AuthService {
     });
     this.transporter.close();
     return await this.userRepository.sendMail(email, otp, expiryMinus);
+  }
+
+  async verifyOTP(email: string, otp: string): Promise<any> {
+    return await this.userRepository.verifyOTP(email, otp);
+  }
+
+  async changePassword(email: string, newPassword: string): Promise<any> {
+    const salt = 10;
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+    return await this.userRepository.changePassword(email, hashedPassword);
   }
 }

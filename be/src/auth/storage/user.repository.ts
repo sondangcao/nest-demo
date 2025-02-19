@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../entity/user.entity';
@@ -69,5 +70,43 @@ export class UserRepository {
       { email },
       { otp: otp, otp_expiry: expiryDate },
     );
+  }
+
+  async verifyOTP(email: string, otpInput: string): Promise<boolean> {
+    const existingOTP = await this.userRepository.findOne({
+      where: { email: email },
+      select: ['otp', 'otp_expiry'],
+    });
+    if (!existingOTP) {
+      throw new Error('OTP does not exist');
+    }
+    const dateNow = new Date();
+    if (dateNow > existingOTP.otp_expiry) {
+      throw new Error('OTP has expired');
+    }
+    if (dateNow < existingOTP.otp_expiry && existingOTP.otp === otpInput) {
+      await this.userRepository.update(
+        { email },
+        {
+          // @ts-ignore
+          otp: null,
+          // @ts-ignore
+          otp_expiry: null,
+        },
+      );
+    }
+    return true;
+  }
+
+  async changePassword(email: string, newPassword: string): Promise<boolean> {
+    const existingUser = await this.userRepository.findOne({
+      where: { email: email },
+    });
+    if (!existingUser) {
+      throw new Error('Email is not exists');
+    } else {
+      await this.userRepository.update({ email }, { password: newPassword });
+    }
+    return true;
   }
 }
