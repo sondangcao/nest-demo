@@ -49,3 +49,15 @@ export class UserLoginDTO {
   @MaxLength(32)
   password: string;
 }
+
+export class SendMailDTO {
+  @IsNotEmpty()
+  @IsEmail()
+  email: string;
+
+  @IsNotEmpty()
+  otp: string;
+
+  @IsNotEmpty()
+  otp_expiry: string;
+}

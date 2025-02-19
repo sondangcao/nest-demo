@@ -1,5 +1,4 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { Exclude } from 'class-transformer';
 
 export enum UserRole {
   ADMIN = 'admin',
@@ -59,8 +58,8 @@ export class User {
   @Column({ name: 'otp', nullable: true })
   otp: string;
 
-  @Column({ name: 'otp_expiry', nullable: true })
-  otp_expiry: string;
+  @Column({ type: 'datetime', name: 'otp_expiry', nullable: true, default: () => 'CURRENT_TIMESTAMP' })
+  otp_expiry: Date;
 
   @Column({ name: 'avatar', nullable: true })
   avatar: string;

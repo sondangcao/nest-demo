@@ -1,14 +1,6 @@
-import {
-  Body,
-  Controller,
-  Get,
-  HttpCode,
-  HttpStatus,
-  Post,
-  Request,
-} from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { AuthService } from '../services/auth.service';
-import { UserCreateDTO, UserLoginDTO } from '../entity/user.dto';
+import { SendMailDTO, UserCreateDTO, UserLoginDTO } from '../entity/user.dto';
 import { User } from '../entity/user.entity';
 import { Public } from '../../constants/auth';
 import { InternalServerException } from '../../exceptions/internalServer.exception';
@@ -42,8 +34,16 @@ export class AuthController {
     }
   }
 
-  @Get('profile')
-  getProfile(@Request() req: User) {
-    return req.email;
+  private generateRandomCode(): string {
+    return Math.floor(100000 + Math.random() * 900000).toString();
+  }
+
+  @Public()
+  @HttpCode(HttpStatus.OK)
+  @Post('forgot-password')
+  async sendMail(@Body() body: { email: string }) {
+    const otp = this.generateRandomCode();
+    console.log('otp', otp);
+    await this.authService.sendMail(body.email, otp, 10, body.email);
   }
 }

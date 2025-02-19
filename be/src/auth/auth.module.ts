@@ -6,9 +6,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserRepository } from './storage/user.repository';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from '../constants/auth';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     TypeOrmModule.forFeature([User]),
     JwtModule.register({
       global: true,

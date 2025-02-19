@@ -57,4 +57,17 @@ export class UserRepository {
       access_token: 'Bearer ' + token,
     };
   }
+
+  async sendMail(
+    email: string,
+    otp: string,
+    expiryMinus: number,
+  ): Promise<any> {
+    const expiryDate = new Date();
+    expiryDate.setMinutes(expiryDate.getMinutes() + expiryMinus);
+    return await this.userRepository.update(
+      { email },
+      { otp: otp, otp_expiry: expiryDate },
+    );
+  }
 }
