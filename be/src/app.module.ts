@@ -3,7 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
-import { User } from './auth/entity/user.entity';
+// import { User } from './auth/entity/user.entity';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth/guard';
 
@@ -12,7 +12,7 @@ import { AuthGuard } from './auth/guard';
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: 'ep-sweet-tooth-a2y9mxhy.eu-central-1.pg.koyeb.app',
-      port: 3306,
+      port: 5431,
       username: 'koyeb-adm',
       password: 'npg_Ir4SgT1sWOpy',
       database: 'tutorialdb',
@@ -22,8 +22,9 @@ import { AuthGuard } from './auth/guard';
       // username: 'root',
       // password: 'dangcaoson',
       // database: 'tutorial_db',
-      entities: [User],
+      entities: [],
       synchronize: true,
+      logging: true,
     }),
     AuthModule,
   ],
