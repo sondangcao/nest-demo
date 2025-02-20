@@ -6,20 +6,16 @@ import { UserCreateDTO } from '../entity/user.dto';
 import { User } from '../entity/user.entity';
 import * as bcrypt from 'bcrypt';
 import * as nodemailer from 'nodemailer';
-import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
   private transporter;
 
-  constructor(
-    private configService: ConfigService,
-    private userRepository: UserRepository,
-  ) {
+  constructor(private userRepository: UserRepository) {
     this.transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        user: this.configService.get<string>('EMAIL_USER'),
+        user: 'dangson06121998@gmail.com',
         pass: 'lgnw offg mfzu qofp',
       },
     });
@@ -44,7 +40,7 @@ export class AuthService {
     to: string,
   ): Promise<any> {
     await this.transporter.sendMail({
-      from: this.configService.get<string>('EMAIL_USER'),
+      from: 'dangson06121998@gmail.com',
       to,
       subject: 'Your Verification Code',
       html: `<h1>Your code: ${otp}</h1>`,
