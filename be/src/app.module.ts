@@ -10,12 +10,18 @@ import { AuthGuard } from './auth/guard';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
+      type: 'postgres',
+      host: 'ep-sweet-tooth-a2y9mxhy.eu-central-1.pg.koyeb.app',
       port: 3306,
-      username: 'root',
-      password: 'dangcaoson',
-      database: 'tutorial_db',
+      username: 'koyeb-adm',
+      password: 'npg_Ir4SgT1sWOpy',
+      database: 'tutorialdb',
+      // type: 'mysql',
+      // host: 'localhost',
+      // port: 3306,
+      // username: 'root',
+      // password: 'dangcaoson',
+      // database: 'tutorial_db',
       entities: [User],
       synchronize: true,
     }),
