@@ -12,14 +12,15 @@ import {
   Post,
   Put,
   Param,
+  Query,
   Delete,
+  Get,
 } from '@nestjs/common';
 import { DishService } from '../services/dish.service';
 import { DishCreateDTO, DishUpdateDTO } from '../entity/dish.dto';
 import { Dish } from '../entity/dish.entity';
 import { JwtService } from '@nestjs/jwt';
 import { jwtConstants } from 'src/constants/auth';
-// import { jwtConstants } from 'src/constants/auth';
 
 @Controller('dish')
 export class DishController {
@@ -73,6 +74,20 @@ export class DishController {
   async delete(@Param('id') id: number): Promise<boolean> {
     try {
       return await this.dishService.delete(id);
+    } catch (error) {
+      console.log('error', error);
+      throw new InternalServerErrorException();
+    }
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Get('list')
+  async listWithPagination(
+    @Query('page') page: number,
+    @Query('pageSize') pageSize: number,
+  ): Promise<any> {
+    try {
+      return await this.dishService.listWithPanigation(page, pageSize);
     } catch (error) {
       console.log('error', error);
       throw new InternalServerErrorException();
