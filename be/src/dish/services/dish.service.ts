@@ -18,4 +18,8 @@ export class DishService {
   async delete(id: number): Promise<boolean> {
     return this.dishRepository.delete(id);
   }
+
+  async listWithPanigation(page: number, pageSize: number): Promise<any> {
+    return this.dishRepository.listWithPagination(page, pageSize);
+  }
 }

@@ -55,4 +55,18 @@ export class DishRepository {
       .execute();
     return true;
   }
+
+  async listWithPagination(page: number, pageSize: number): Promise<any> {
+    const [result, total] = await this.dishRepository
+      .createQueryBuilder()
+      .skip((page - 1) * pageSize)
+      .take(pageSize)
+      .getManyAndCount();
+    return {
+      data: result,
+      count: total,
+      totalPages: Math.ceil(total / pageSize),
+      currentPage: page,
+    };
+  }
 }
