@@ -69,4 +69,14 @@ export class DishRepository {
       currentPage: page,
     };
   }
+
+  async getDEtail(id: number): Promise<Dish> {
+    const existDish = await this.dishRepository.findOne({
+      where: { id: id },
+    });
+    if (!existDish) {
+      throw new Error('Dish is not exist');
+    }
+    return existDish;
+  }
 }

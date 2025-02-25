@@ -93,4 +93,15 @@ export class DishController {
       throw new InternalServerErrorException();
     }
   }
+
+  @HttpCode(HttpStatus.OK)
+  @Get(':id')
+  async getDetail(@Param('id') id: number): Promise<Dish> {
+    try {
+      return await this.dishService.getDetail(id);
+    } catch (error) {
+      console.log('error', error);
+      throw new InternalServerErrorException();
+    }
+  }
 }
