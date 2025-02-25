@@ -6,7 +6,9 @@ import { AuthModule } from './auth/auth.module';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth/guard';
 import { User } from './auth/entity/user.entity';
-import * as process from 'node:process';
+import { DishController } from './dish/business/dish.controller';
+import { DishModule } from './dish/dish.module';
+import { Dish } from './dish/entity/dish.entity';
 
 @Module({
   imports: [
@@ -17,12 +19,13 @@ import * as process from 'node:process';
       username: process.env.DB_USER,
       password: process.env.DB_PASS,
       database: process.env.DB_NAME,
-      entities: [User],
+      entities: [User, Dish],
       synchronize: true,
     }),
     AuthModule,
+    DishModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, DishController],
   providers: [
     AppService,
     {
