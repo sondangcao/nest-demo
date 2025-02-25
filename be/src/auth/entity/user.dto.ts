@@ -37,6 +37,44 @@ export class UserCreateDTO {
 
   @IsNotEmpty()
   created_at: string;
+
+  @IsNotEmpty()
+  updated_at: string;
+}
+
+export class UserUpdateDTO {
+  @IsNotEmpty()
+  @IsEmail()
+  email: string;
+
+  @IsNotEmpty()
+  firstName: string;
+
+  @IsNotEmpty()
+  lastName: string;
+
+  @IsNotEmpty()
+  @MinLength(6)
+  @MaxLength(32)
+  password: string;
+
+  @IsEnum(UserRole, { message: 'Role must be admin, user, or moderator' })
+  role: UserRole;
+
+  @IsNotEmpty()
+  gender: string;
+
+  @IsNotEmpty()
+  phone: string;
+
+  @IsNotEmpty()
+  dob: string;
+
+  @IsNotEmpty()
+  created_at: string;
+
+  @IsNotEmpty()
+  updated_at: string;
 }
 
 export class UserLoginDTO {

@@ -1,0 +1,44 @@
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { UserUpdateDTO } from 'src/auth/entity/user.dto';
+import { User } from 'src/auth/entity/user.entity';
+import { Repository } from 'typeorm';
+
+@Injectable()
+export class ProfileRepository {
+  constructor(
+    @InjectRepository(User)
+    private readonly profileRepository: Repository<User>,
+  ) {}
+
+  async getDetail(id: number): Promise<User> {
+    const existingUser = await this.profileRepository.findOne({
+      where: { id: id },
+    });
+
+    if (!existingUser) {
+      throw Error('You do not have permission to view other people profile');
+    }
+    return existingUser;
+  }
+
+  async updateProfile(
+    id: number,
+    updateProfileDTO: UserUpdateDTO,
+  ): Promise<User> {
+    const existingUser = await this.profileRepository.findOne({
+      where: { id: id },
+    });
+
+    if (!existingUser) {
+      throw Error('You do not have permission to update other people profile');
+    }
+    Object.assign(existingUser, updateProfileDTO);
+    return this.profileRepository.save(existingUser);
+  }
+
+  async banUser(status: number, id: number): Promise<boolean> {
+    await this.profileRepository.update({ id }, { status: status });
+    return true;
+  }
+}

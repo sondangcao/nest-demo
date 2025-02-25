@@ -9,6 +9,8 @@ import { User } from './auth/entity/user.entity';
 import { DishController } from './dish/business/dish.controller';
 import { DishModule } from './dish/dish.module';
 import { Dish } from './dish/entity/dish.entity';
+import { UserModule } from './user/user.module';
+import { ProfileController } from './user/business/user.controller';
 
 @Module({
   imports: [
@@ -30,8 +32,9 @@ import { Dish } from './dish/entity/dish.entity';
     }),
     AuthModule,
     DishModule,
+    UserModule,
   ],
-  controllers: [AppController, DishController],
+  controllers: [AppController, DishController, ProfileController],
   providers: [
     AppService,
     {

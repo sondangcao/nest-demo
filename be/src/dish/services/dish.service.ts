@@ -22,4 +22,8 @@ export class DishService {
   async listWithPanigation(page: number, pageSize: number): Promise<any> {
     return this.dishRepository.listWithPagination(page, pageSize);
   }
+
+  async getDetail(id: number): Promise<Dish> {
+    return this.dishRepository.getDEtail(id);
+  }
 }
