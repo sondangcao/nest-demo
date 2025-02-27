@@ -1,8 +1,13 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
+import { IoAdapter } from '@nestjs/platform-socket.io';
+import { NotificationGateway } from './lib/websocket/websocket.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  await app.listen(process.env.PORT ?? 3000);
+  app.useWebSocketAdapter(new IoAdapter(app));
+  app.enableCors();
+  app.get(NotificationGateway);
+  await app.listen(3000);
 }
 bootstrap();
