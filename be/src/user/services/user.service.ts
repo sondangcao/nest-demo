@@ -13,4 +13,8 @@ export class ProfileService {
   async banUser(status: number, id: number): Promise<boolean> {
     return this.profileRepo.banUser(status, id);
   }
+
+  async listWithPanigation(page: number, pageSize: number): Promise<any> {
+    return this.profileRepo.listWithPagination(page, pageSize);
+  }
 }

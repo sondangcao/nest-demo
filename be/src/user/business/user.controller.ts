@@ -8,8 +8,10 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  InternalServerErrorException,
   Param,
   Patch,
+  Query,
   Request,
 } from '@nestjs/common';
 import { ProfileService } from '../services/user.service';
@@ -51,6 +53,20 @@ export class ProfileController {
     } catch (error) {
       console.log('error', error);
       throw new InternalServerException();
+    }
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Get('list')
+  async listWithPagination(
+    @Query('page') page: number,
+    @Query('pageSize') pageSize: number,
+  ): Promise<any> {
+    try {
+      return await this.profileService.listWithPanigation(page, pageSize);
+    } catch (error) {
+      console.log('error', error);
+      throw new InternalServerErrorException();
     }
   }
 }

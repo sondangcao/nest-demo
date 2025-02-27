@@ -55,10 +55,15 @@ export class User {
   @Column({ name: 'status', nullable: false, default: 1 })
   status: number;
 
-  @Column({ name: 'otp', nullable: true })
+  @Column({ name: 'otp', nullable: true, select: false })
   otp: string;
 
-  @Column({ type: 'timestamp', name: 'otp_expiry', nullable: true })
+  @Column({
+    type: 'timestamp',
+    name: 'otp_expiry',
+    nullable: true,
+    select: false,
+  })
   otp_expiry: Date;
 
   @Column({ name: 'avatar', nullable: true })

@@ -66,7 +66,7 @@ export class DishRepository {
       data: result,
       count: total,
       totalPages: Math.ceil(total / pageSize),
-      currentPage: page,
+      currentPage: +page,
     };
   }
 
