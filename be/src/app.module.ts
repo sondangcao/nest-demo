@@ -11,6 +11,11 @@ import { DishModule } from './dish/dish.module';
 import { Dish } from './dish/entity/dish.entity';
 import { UserModule } from './user/user.module';
 import { ProfileController } from './user/business/user.controller';
+import { PartyController } from './party/business/party.controller';
+import { PartyModule } from './party/party.module';
+import { Parties } from './party/entity/parties.entity';
+import { NotificationGateway } from './lib/websocket/websocket.service';
+import { RedisService } from './lib/redis/redis.service';
 
 @Module({
   imports: [
@@ -27,20 +32,28 @@ import { ProfileController } from './user/business/user.controller';
       // username: 'root',
       // password: 'dangcaoson',
       // database: 'tutorial_db',
-      entities: [User, Dish],
+      entities: [User, Dish, Parties],
       synchronize: true,
     }),
     AuthModule,
     DishModule,
     UserModule,
+    PartyModule,
   ],
-  controllers: [AppController, DishController, ProfileController],
+  controllers: [
+    AppController,
+    DishController,
+    ProfileController,
+    PartyController,
+  ],
   providers: [
     AppService,
     {
       provide: APP_GUARD,
       useClass: AuthGuard,
     },
+    NotificationGateway,
+    RedisService,
   ],
 })
 export class AppModule {}
