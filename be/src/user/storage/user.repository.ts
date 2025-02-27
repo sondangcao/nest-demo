@@ -41,4 +41,18 @@ export class ProfileRepository {
     await this.profileRepository.update({ id }, { status: status });
     return true;
   }
+
+  async listWithPagination(page: number, pageSize: number): Promise<any> {
+    const [result, total] = await this.profileRepository
+      .createQueryBuilder()
+      .skip((page - 1) * pageSize)
+      .take(pageSize)
+      .getManyAndCount();
+    return {
+      data: result,
+      count: total,
+      totalPages: Math.ceil(total / pageSize),
+      currentPage: +page,
+    };
+  }
 }

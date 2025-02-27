@@ -50,7 +50,7 @@ export class UserRepository {
       throw new Error('Invalid credentials');
     }
 
-    const payload = { sub: existingUser.id, username: existingUser.role };
+    const payload = { sub: existingUser.id, email: existingUser.email };
 
     const token = this.jwtService.sign(payload);
 
