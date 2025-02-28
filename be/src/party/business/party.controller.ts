@@ -28,11 +28,12 @@ export class PartyController {
   async create(
     @Body() createPartiesDTO: PartiesCreateDTO,
     @Request() req: Request,
+    userFCM: string[],
   ): Promise<Parties> {
     const user = req.headers['authorization'];
     const decoded = await this.jwtService.verifyAsync(user.split(' ')[1], {
       secret: jwtConstants.secret,
     });
-    return this.partiesService.create(createPartiesDTO, +decoded.sub);
+    return this.partiesService.create(createPartiesDTO, +decoded.sub, userFCM);
   }
 }

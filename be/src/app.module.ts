@@ -16,6 +16,9 @@ import { PartyModule } from './party/party.module';
 import { Parties } from './party/entity/parties.entity';
 import { NotificationGateway } from './lib/websocket/websocket.service';
 import { RedisService } from './lib/redis/redis.service';
+import { NotificationsController } from './notifications/business/notifications.controller';
+import { NotificationsModule } from './notifications/notifications.module';
+import { Notifications } from './notifications/entity/notifications.entity';
 
 @Module({
   imports: [
@@ -32,19 +35,21 @@ import { RedisService } from './lib/redis/redis.service';
       // username: 'root',
       // password: 'dangcaoson',
       // database: 'tutorial_db',
-      entities: [User, Dish, Parties],
+      entities: [User, Dish, Parties, Notifications],
       synchronize: true,
     }),
     AuthModule,
     DishModule,
     UserModule,
     PartyModule,
+    NotificationsModule,
   ],
   controllers: [
     AppController,
     DishController,
     ProfileController,
     PartyController,
+    NotificationsController,
   ],
   providers: [
     AppService,

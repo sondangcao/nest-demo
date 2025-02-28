@@ -6,9 +6,10 @@ import { PartyController } from './business/party.controller';
 import { PartiesRepository } from './storage/parties.repository';
 import { PartyService } from './services/party.service';
 import { RedisService } from 'src/lib/redis/redis.service';
+import { NotificationsModule } from 'src/notifications/notifications.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Parties, User])],
+  imports: [TypeOrmModule.forFeature([Parties, User]), NotificationsModule],
   controllers: [PartyController],
   providers: [PartiesRepository, PartyService, RedisService],
   exports: [PartyService],

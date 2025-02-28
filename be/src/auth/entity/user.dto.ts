@@ -4,10 +4,15 @@ import {
   MinLength,
   IsEmail,
   MaxLength,
+  IsEmpty,
 } from 'class-validator';
 import { UserRole } from './user.entity';
+import { Notifications } from 'src/notifications/entity/notifications.entity';
 
 export class UserCreateDTO {
+  @IsEmpty()
+  notifications: Notifications[];
+
   @IsNotEmpty()
   @IsEmail()
   email: string;
@@ -43,6 +48,9 @@ export class UserCreateDTO {
 }
 
 export class UserUpdateDTO {
+  @IsEmpty()
+  notifications: Notifications[];
+
   @IsNotEmpty()
   @IsEmail()
   email: string;
