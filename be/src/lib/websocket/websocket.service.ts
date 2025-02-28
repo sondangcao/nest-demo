@@ -21,16 +21,18 @@ export class NotificationGateway
 {
   @WebSocketServer() server: Server;
 
-  constructor(private readonly redisService: RedisService) {
-    console.log('fuck');
-  }
+  constructor(private readonly redisService: RedisService) {}
 
   afterInit() {
     console.log('✅ WebSocket Server is running...');
     this.redisService.subscribe('notifications', (message) => {
       console.log('📥 WebSocket received Redis message:', message);
-      this.server.emit('notifications', message);
+      this.server.emit('new_notification', message);
     });
+  }
+
+  sendNotification(userId: number, notification: any) {
+    this.server.to(`user_${userId}`).emit('notifications', notification);
   }
 
   handleConnection(client: Socket) {

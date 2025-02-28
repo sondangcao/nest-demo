@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Notifications } from 'src/notifications/entity/notifications.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 export enum UserRole {
   ADMIN = 'admin',
@@ -6,12 +7,17 @@ export enum UserRole {
   CHEF = 'chef',
 }
 
-@Entity()
+@Entity('user')
 export class User {
   @PrimaryGeneratedColumn({
     type: 'bigint',
   })
   id: number;
+
+  @OneToMany(() => Notifications, (notification) => notification.user, {
+    cascade: true,
+  })
+  notifications: Notifications[];
 
   @Column({ name: 'first_name', nullable: false })
   firstName: string;
