@@ -21,7 +21,6 @@ export class RedisService {
   async subscribe(channel: string, callback: (message: any) => void) {
     await this.subscriber.subscribe(channel);
     this.subscriber.on('message', (ch, message) => {
-      console.log(`📥 Received message from Redis: ${message}`);
       if (ch === channel) {
         callback(JSON.parse(message));
       }

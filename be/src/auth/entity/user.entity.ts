@@ -1,4 +1,5 @@
 import { Notifications } from 'src/notifications/entity/notifications.entity';
+import { UserToken } from 'src/user-token/entity/user-token.entity';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 export enum UserRole {
@@ -75,8 +76,8 @@ export class User {
   @Column({ name: 'avatar', nullable: true })
   avatar: string;
 
-  @Column({ name: 'group_id', nullable: true })
-  group_id: number;
+  @OneToMany(() => UserToken, (token) => token.user)
+  tokens: UserToken[];
 
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP' })
   created_at: Date;

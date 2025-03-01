@@ -2,7 +2,6 @@
 import { Injectable } from '@nestjs/common';
 import { NotiRepository } from '../storage/notifications.repository';
 import { TYPE } from '../entity/notifications.entity';
-import { NotificationGateway } from 'src/lib/websocket/websocket.service';
 import { FirebaseService } from 'src/firebase/firebase.service';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/auth/entity/user.entity';
@@ -14,7 +13,6 @@ import { Parties } from 'src/party/entity/parties.entity';
 export class NotificationsService {
   constructor(
     private readonly notiRepository: NotiRepository,
-    private readonly notiGateway: NotificationGateway,
     private readonly redisService: RedisService,
     private readonly firebaseService: FirebaseService,
     @InjectRepository(User)
@@ -23,7 +21,6 @@ export class NotificationsService {
 
   async createNotification(party: Parties, userFCM: string[]) {
     const users = await this.userRepository.find();
-
     const notifications = users.map((user) => ({
       userId: user.id,
       message: `Tiệc mới: ${party.name} vào ${party.eventDate.toString()}`,

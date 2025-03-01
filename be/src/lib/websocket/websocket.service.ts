@@ -27,12 +27,8 @@ export class NotificationGateway
     console.log('✅ WebSocket Server is running...');
     this.redisService.subscribe('notifications', (message) => {
       console.log('📥 WebSocket received Redis message:', message);
-      this.server.emit('new_notification', message);
+      this.server.emit('notifications', message);
     });
-  }
-
-  sendNotification(userId: number, notification: any) {
-    this.server.to(`user_${userId}`).emit('notifications', notification);
   }
 
   handleConnection(client: Socket) {
