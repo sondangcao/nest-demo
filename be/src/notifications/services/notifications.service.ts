@@ -1,4 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Injectable } from '@nestjs/common';
 import { NotiRepository } from '../storage/notifications.repository';
 import { TYPE } from '../entity/notifications.entity';
@@ -27,7 +28,8 @@ export class NotificationsService {
       partyId: party.id,
       type: TYPE.NEW_PARTY,
     }));
-    await this.notiRepository.saveNotification(notifications);
+
+    const listNoti = await this.notiRepository.saveNotification(notifications);
 
     await this.redisService.publish('notifications', {
       type: 'NEW_PARTY',
@@ -36,11 +38,14 @@ export class NotificationsService {
     });
 
     for (const token of userFCM) {
-      await this.firebaseService.sendNotification(
-        token,
-        `${party.name}`,
-        `${party.description}`,
-      );
+      for (const notiId of listNoti) {
+        await this.firebaseService.sendNotification(
+          token,
+          notiId ? +notiId?.id : 0,
+          `${party.name}`,
+          `${party.description}`,
+        );
+      }
     }
   }
 }

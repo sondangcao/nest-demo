@@ -26,9 +26,15 @@ export class FirebaseService {
     });
   }
 
-  async sendNotification(token: string, title: string, body: string) {
+  async sendNotification(
+    token: string,
+    id: number,
+    title: string,
+    body: string,
+  ) {
     const message = {
       notification: { title, body },
+      data: { id: id.toString() },
       token,
     };
 
