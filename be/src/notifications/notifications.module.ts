@@ -9,9 +9,10 @@ import { NotificationGateway } from 'src/lib/websocket/websocket.service';
 import { NotificationsController } from './business/notifications.controller';
 import { UserRepository } from 'src/auth/storage/user.repository';
 import { NotiRepository } from './storage/notifications.repository';
+import { UserToken } from 'src/user-token/entity/user-token.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, Notifications])],
+  imports: [TypeOrmModule.forFeature([User, Notifications, UserToken])],
   controllers: [NotificationsController],
   providers: [
     NotiRepository,

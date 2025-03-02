@@ -9,6 +9,7 @@ import { User } from 'src/auth/entity/user.entity';
 import { Repository } from 'typeorm';
 import { RedisService } from 'src/lib/redis/redis.service';
 import { Parties } from 'src/party/entity/parties.entity';
+import { UserToken } from 'src/user-token/entity/user-token.entity';
 
 @Injectable()
 export class NotificationsService {
@@ -18,10 +19,24 @@ export class NotificationsService {
     private readonly firebaseService: FirebaseService,
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
+    @InjectRepository(UserToken)
+    private readonly userTokenRepository: Repository<UserToken>,
   ) {}
 
-  async createNotification(party: Parties, userFCM: string[]) {
+  async createNotification(party: Parties) {
     const users = await this.userRepository.find();
+    const usersWithToken = await this.userTokenRepository.find({
+      select: ['token'],
+      relations: ['user'],
+    });
+
+    const FCMMessage = usersWithToken.map((user) => ({
+      userId: user.user.id,
+      token: user.token,
+    }));
+
+    const userToken = new Map(FCMMessage.map((u: any) => [u.userId, u.token]));
+
     const notifications = users.map((user) => ({
       userId: user.id,
       message: `Tiệc mới: ${party.name} vào ${party.eventDate.toString()}`,
@@ -37,11 +52,13 @@ export class NotificationsService {
       party_id: party.id,
     });
 
-    for (const token of userFCM) {
-      for (const notiId of listNoti) {
+    for (const noti of listNoti) {
+      const token = userToken.get(String(noti.user?.id));
+      if (token) {
         await this.firebaseService.sendNotification(
           token,
-          notiId ? +notiId?.id : 0,
+          +noti?.id,
+          +noti.user?.id,
           `${party.name}`,
           `${party.description}`,
         );

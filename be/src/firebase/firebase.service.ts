@@ -28,13 +28,14 @@ export class FirebaseService {
 
   async sendNotification(
     token: string,
-    id: number,
+    NotificationId: number,
+    userId: number,
     title: string,
     body: string,
   ) {
     const message = {
       notification: { title, body },
-      data: { id: id.toString() },
+      data: { id: NotificationId.toString(), userId: userId.toString() },
       token,
     };
 
