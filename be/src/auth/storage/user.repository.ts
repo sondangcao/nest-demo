@@ -1,5 +1,9 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../entity/user.entity';
 import { Repository } from 'typeorm';
@@ -38,7 +42,7 @@ export class UserRepository {
       .getOne();
 
     if (!existingUser) {
-      throw new Error('Email already not exists');
+      throw new BadRequestException('Email đã tồn tại');
     }
 
     const isPasswordValid = await bcrypt.compare(
@@ -46,8 +50,8 @@ export class UserRepository {
       existingUser.password,
     );
 
-    if (!isPasswordValid) {
-      throw new Error('Invalid credentials');
+    if (!isPasswordValid && existingUser) {
+      throw new BadRequestException('Email hoặc mật khẩu không chính xác');
     }
 
     const payload = { sub: existingUser.id, email: existingUser.email };
@@ -78,11 +82,11 @@ export class UserRepository {
       select: ['otp', 'otp_expiry'],
     });
     if (!existingOTP) {
-      throw new Error('OTP does not exist');
+      throw new InternalServerErrorException('OTP does not exist');
     }
     const dateNow = new Date();
     if (dateNow > existingOTP.otp_expiry) {
-      throw new Error('OTP has expired');
+      throw new BadRequestException('OTP has expired');
     }
     if (dateNow < existingOTP.otp_expiry && existingOTP.otp === otpInput) {
       await this.userRepository.update(
@@ -103,7 +107,7 @@ export class UserRepository {
       where: { email: email },
     });
     if (!existingUser) {
-      throw new Error('Email is not exists');
+      throw new InternalServerErrorException('Email is not exists');
     } else {
       await this.userRepository.update({ email }, { password: newPassword });
     }

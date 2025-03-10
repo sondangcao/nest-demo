@@ -8,102 +8,88 @@ import {
 } from 'class-validator';
 import { UserRole } from './user.entity';
 import { Notifications } from 'src/notifications/entity/notifications.entity';
+import 'reflect-metadata';
 
 export class UserCreateDTO {
   @IsEmpty()
   notifications: Notifications[];
 
-  @IsNotEmpty()
-  @IsEmail()
+  @IsNotEmpty({ message: 'Email không được để trống' })
+  @IsEmail({}, { message: 'Email không hợp lệ' })
   email: string;
 
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'Họ không được để trống' })
   firstName: string;
 
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'Tên không được để trống' })
   lastName: string;
 
-  @IsNotEmpty()
-  @MinLength(6)
-  @MaxLength(32)
+  @IsNotEmpty({ message: 'Password không được để trống' })
+  @MinLength(6, { message: 'Password phải nằm trong khoảng từ 6 đến 32 ký tự' })
+  @MaxLength(32, {
+    message: 'Password phải nằm trong khoảng từ 6 đến 32 ký tự',
+  })
   password: string;
 
-  @IsEnum(UserRole, { message: 'Role must be admin, user, or moderator' })
+  @IsEnum(UserRole, {
+    message: 'Vai trò phải là quản lý, thành viên hoặc đầu bếp',
+  })
   role: UserRole;
 
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'Giới tính không được để trống' })
   gender: string;
 
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'Số điện thoại không được để trống' })
   phone: string;
 
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'Ngày sinh nhật không được để trống' })
   dob: string;
-
-  @IsNotEmpty()
-  created_at: string;
-
-  @IsNotEmpty()
-  updated_at: string;
 }
-
 export class UserUpdateDTO {
   @IsEmpty()
   notifications: Notifications[];
 
-  @IsNotEmpty()
-  @IsEmail()
+  @IsNotEmpty({ message: 'Email không được để trống' })
+  @IsEmail({}, { message: 'Email không hợp lệ' })
   email: string;
 
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'Họ không được để trống' })
   firstName: string;
 
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'Tên không được để trống' })
   lastName: string;
 
-  @IsNotEmpty()
-  @MinLength(6)
-  @MaxLength(32)
+  @IsNotEmpty({ message: 'Password không được để trống' })
+  @MinLength(6, { message: 'Password phải nằm trong khoảng từ 6 đến 32 ký tự' })
+  @MaxLength(32, {
+    message: 'Password phải nằm trong khoảng từ 6 đến 32 ký tự',
+  })
   password: string;
 
-  @IsEnum(UserRole, { message: 'Role must be admin, user, or moderator' })
+  @IsEnum(UserRole, {
+    message: 'Vai trò phải là quản lý, thành viên hoặc đầu bếp',
+  })
   role: UserRole;
 
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'Giới tính không được để trống' })
   gender: string;
 
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'Số điện thoại không được để trống' })
   phone: string;
 
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'Ngày sinh nhật không được để trống' })
   dob: string;
-
-  @IsNotEmpty()
-  created_at: string;
-
-  @IsNotEmpty()
-  updated_at: string;
 }
 
 export class UserLoginDTO {
-  @IsNotEmpty()
-  @IsEmail()
+  @IsNotEmpty({ message: 'Email không được để trống' })
+  @IsEmail({}, { message: 'Email không hợp lệ' })
   email: string;
 
-  @IsNotEmpty()
-  @MinLength(6)
-  @MaxLength(32)
+  @IsNotEmpty({ message: 'Password không được để trống' })
+  @MinLength(6, { message: 'Password phải nằm trong khoảng từ 6 đến 32 ký tự' })
+  @MaxLength(32, {
+    message: 'Password phải nằm trong khoảng từ 6 đến 32 ký tự',
+  })
   password: string;
-}
-
-export class SendMailDTO {
-  @IsNotEmpty()
-  @IsEmail()
-  email: string;
-
-  @IsNotEmpty()
-  otp: string;
-
-  @IsNotEmpty()
-  otp_expiry: string;
 }
