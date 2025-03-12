@@ -42,7 +42,7 @@ export class UserRepository {
       .getOne();
 
     if (!existingUser) {
-      throw new BadRequestException('Email đã tồn tại');
+      throw new BadRequestException('Tài khoản này chưa tồn tại');
     }
 
     const isPasswordValid = await bcrypt.compare(
@@ -70,6 +70,14 @@ export class UserRepository {
   ): Promise<any> {
     const expiryDate = new Date();
     expiryDate.setMinutes(expiryDate.getMinutes() + expiryMinus);
+    const existingUser = await this.userRepository
+      .createQueryBuilder('user')
+      .where('user.email = :email', { email })
+      .getOne();
+
+    if (!existingUser) {
+      throw new BadRequestException('Tài khoản này chưa tồn tại');
+    }
     return await this.userRepository.update(
       { email },
       { otp: otp, otp_expiry: expiryDate },
@@ -81,8 +89,8 @@ export class UserRepository {
       where: { email: email },
       select: ['otp', 'otp_expiry'],
     });
-    if (!existingOTP) {
-      throw new InternalServerErrorException('OTP does not exist');
+    if (existingOTP?.otp !== otpInput) {
+      throw new BadRequestException('mã OTP bạn gửi lên không đúng');
     }
     const dateNow = new Date();
     if (dateNow > existingOTP.otp_expiry) {
