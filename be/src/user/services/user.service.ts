@@ -6,7 +6,7 @@ import { User } from 'src/auth/entity/user.entity';
 export class ProfileService {
   constructor(private readonly profileRepo: ProfileRepository) {}
 
-  async getDetail(id: number): Promise<User> {
+  async getDetail(id: number): Promise<{ user: User }> {
     return this.profileRepo.getDetail(id);
   }
 

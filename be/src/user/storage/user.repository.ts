@@ -11,7 +11,7 @@ export class ProfileRepository {
     private readonly profileRepository: Repository<User>,
   ) {}
 
-  async getDetail(id: number): Promise<User> {
+  async getDetail(id: number): Promise<{ user: User }> {
     const existingUser = await this.profileRepository.findOne({
       where: { id: id },
     });
@@ -19,7 +19,7 @@ export class ProfileRepository {
     if (!existingUser) {
       throw Error('You do not have permission to view other people profile');
     }
-    return existingUser;
+    return { user: existingUser };
   }
 
   async updateProfile(

@@ -12,12 +12,6 @@ export class PartiesCreateDTO {
 
   @IsEmpty()
   createdBy: number;
-
-  @IsNotEmpty()
-  created_at: string;
-
-  @IsNotEmpty()
-  updated_at: string;
 }
 
 export class PartiesUpdateDTO {
@@ -32,10 +26,4 @@ export class PartiesUpdateDTO {
 
   @IsNotEmpty()
   createdBy: number;
-
-  @IsNotEmpty()
-  created_at: string;
-
-  @IsNotEmpty()
-  updated_at: string;
 }

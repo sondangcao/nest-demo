@@ -29,17 +29,12 @@ export class ProfileController {
 
   @HttpCode(HttpStatus.OK)
   @Get('profile')
-  async getDetail(@Request() req: Request): Promise<User> {
-    try {
-      const auth = req.headers['authorization'];
-      const decoded = await this.jwtService.verifyAsync(auth.split(' ')[1], {
-        secret: jwtConstants.secret,
-      });
-      return this.profileService.getDetail(+decoded.sub);
-    } catch (error) {
-      console.log('error', error);
-      throw new Error('Not get your profile');
-    }
+  async getDetail(@Request() req: Request): Promise<{ user: User }> {
+    const auth = req.headers['authorization'];
+    const decoded = await this.jwtService.verifyAsync(auth.split(' ')[1], {
+      secret: jwtConstants.secret,
+    });
+    return this.profileService.getDetail(+decoded.sub);
   }
 
   @HttpCode(HttpStatus.OK)
