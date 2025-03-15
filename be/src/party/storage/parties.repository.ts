@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { MoreThan, Repository } from 'typeorm';
 import { Parties } from '../entity/parties.entity';
 import { PartiesCreateDTO } from '../entity/parties.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -20,5 +20,12 @@ export class PartiesRepository {
     const user = await this.userRepository.findOne({ where: { id } });
     const newData = { ...createPartiesDTO, createdBy: user?.id };
     return await this.partiesRepository.save(newData);
+  }
+
+  async list(): Promise<{ parties: Parties[] }> {
+    const listParties = await this.partiesRepository.find({
+      where: { eventDate: MoreThan(new Date()) },
+    });
+    return { parties: listParties };
   }
 }

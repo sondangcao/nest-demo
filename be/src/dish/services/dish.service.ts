@@ -19,8 +19,8 @@ export class DishService {
     return this.dishRepository.delete(id);
   }
 
-  async listWithPanigation(page: number, pageSize: number): Promise<any> {
-    return this.dishRepository.listWithPagination(page, pageSize);
+  async list(): Promise<any> {
+    return this.dishRepository.list();
   }
 
   async getDetail(id: number): Promise<Dish> {

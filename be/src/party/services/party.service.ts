@@ -19,4 +19,8 @@ export class PartyService {
     await this.notiService.createNotification(party);
     return party;
   }
+
+  async list(): Promise<{ parties: Parties[] }> {
+    return await this.partiesRepository.list();
+  }
 }

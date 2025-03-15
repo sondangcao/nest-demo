@@ -1,4 +1,4 @@
-import { IsEmpty, IsNotEmpty } from 'class-validator';
+import { IsNotEmpty } from 'class-validator';
 
 export class DishCreateDTO {
   @IsNotEmpty()
@@ -7,14 +7,8 @@ export class DishCreateDTO {
   @IsNotEmpty()
   ingredient: string;
 
-  @IsEmpty()
+  @IsNotEmpty()
   description: string;
-
-  @IsNotEmpty()
-  created_at: string;
-
-  @IsNotEmpty()
-  updated_at: string;
 }
 
 export class DishUpdateDTO {
@@ -24,6 +18,6 @@ export class DishUpdateDTO {
   @IsNotEmpty()
   ingredient: string;
 
-  @IsEmpty()
+  @IsNotEmpty()
   description: string;
 }

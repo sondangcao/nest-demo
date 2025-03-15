@@ -56,17 +56,19 @@ export class DishRepository {
     return true;
   }
 
-  async listWithPagination(page: number, pageSize: number): Promise<any> {
-    const [result, total] = await this.dishRepository
-      .createQueryBuilder()
-      .skip((page - 1) * pageSize)
-      .take(pageSize)
-      .getManyAndCount();
+  async list(): Promise<{
+    data: any;
+  }> {
+    const result = await this.dishRepository.find();
+    const newResult = result.map((item) => ({
+      ...item,
+      ingredient: item.ingredient
+        .replace(/"/g, '')
+        .split(',')
+        .map((i) => i.trim()),
+    }));
     return {
-      data: result,
-      count: total,
-      totalPages: Math.ceil(total / pageSize),
-      currentPage: +page,
+      data: newResult,
     };
   }
 

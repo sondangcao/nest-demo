@@ -12,7 +12,6 @@ import {
   Post,
   Put,
   Param,
-  Query,
   Delete,
   Get,
 } from '@nestjs/common';
@@ -35,20 +34,15 @@ export class DishController {
     @Body() createDishDTO: DishCreateDTO,
     @Request() req: Request,
   ): Promise<Dish> {
-    try {
-      const auth = req.headers['authorization'];
-      const decoded = await this.jwtService.verifyAsync(auth.split(' ')[1], {
-        secret: jwtConstants.secret,
-      });
-      const newRequest = {
-        ...createDishDTO,
-        ingredient: JSON.stringify(createDishDTO.ingredient),
-      };
-      return await this.dishService.create(newRequest, +decoded.sub);
-    } catch (error) {
-      console.log('error', error);
-      throw new InternalServerErrorException();
-    }
+    const auth = req.headers['authorization'];
+    const decoded = await this.jwtService.verifyAsync(auth.split(' ')[1], {
+      secret: jwtConstants.secret,
+    });
+    const newRequest = {
+      ...createDishDTO,
+      ingredient: JSON.stringify(createDishDTO.ingredient),
+    };
+    return await this.dishService.create(newRequest, +decoded.sub);
   }
 
   @HttpCode(HttpStatus.OK)
@@ -82,12 +76,9 @@ export class DishController {
 
   @HttpCode(HttpStatus.OK)
   @Get('list')
-  async listWithPagination(
-    @Query('page') page: number,
-    @Query('pageSize') pageSize: number,
-  ): Promise<any> {
+  async listWithPagination(): Promise<any> {
     try {
-      return await this.dishService.listWithPanigation(page, pageSize);
+      return await this.dishService.list();
     } catch (error) {
       console.log('error', error);
       throw new InternalServerErrorException();

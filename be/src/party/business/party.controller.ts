@@ -5,6 +5,7 @@
 import {
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
   Post,
@@ -34,5 +35,11 @@ export class PartyController {
       secret: jwtConstants.secret,
     });
     return this.partiesService.create(createPartiesDTO, +decoded.sub);
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Get('list')
+  async list(): Promise<{ parties: Parties[] }> {
+    return await this.partiesService.list();
   }
 }
