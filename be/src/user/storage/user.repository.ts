@@ -55,4 +55,8 @@ export class ProfileRepository {
       currentPage: +page,
     };
   }
+
+  async uploadAvatar(id: number, avatarUrl: string): Promise<any> {
+    return this.profileRepository.update({ id }, { avatar: avatarUrl });
+  }
 }

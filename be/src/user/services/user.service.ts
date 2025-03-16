@@ -17,4 +17,8 @@ export class ProfileService {
   async listWithPanigation(page: number, pageSize: number): Promise<any> {
     return this.profileRepo.listWithPagination(page, pageSize);
   }
+
+  async uploadAvatar(userId: number, avatarUrl: string): Promise<any> {
+    return this.profileRepo.uploadAvatar(userId, avatarUrl);
+  }
 }

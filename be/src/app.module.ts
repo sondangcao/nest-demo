@@ -22,6 +22,9 @@ import { Notifications } from './notifications/entity/notifications.entity';
 import { UserTokenService } from './user-token/services/user-token.service';
 import { UserTokenModule } from './user-token/user-token.module';
 import { UserToken } from './user-token/entity/user-token.entity';
+import { CloudinaryService } from './lib/cloudinary';
+import { ProfileService } from './user/services/user.service';
+import { ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -63,6 +66,9 @@ import { UserToken } from './user-token/entity/user-token.entity';
     },
     NotificationGateway,
     RedisService,
+    CloudinaryService,
+    ProfileService,
+    ConfigService,
     UserTokenService,
   ],
 })
